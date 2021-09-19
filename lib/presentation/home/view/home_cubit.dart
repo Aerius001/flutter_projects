@@ -1,6 +1,7 @@
-import 'package:demotechnixo/data/database/tasks_db.dart';
+import 'package:demotechnixo/data/api/api_task.dart';
 import 'package:demotechnixo/domain/entities/loadstatus.dart';
 import 'package:demotechnixo/domain/entities/task.dart';
+import 'package:demotechnixo/domain/reposittories/todo_reposittory.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -9,37 +10,37 @@ part 'home_state.dart';
 // file xử lý logic
 class HomeCubit extends Cubit<HomeState> {
   HomeCubit() : super(HomeState());
-  List<Task> tasks = [];
+  List<Task> task = [];
+  TaskRepository _taskApi = new TaskApi();
   final taskController = TextEditingController();
   bool inSync = false;
   String? taskError;
 
-  Future addTask() async {
-    final db = TasksDB();
-    final task = Task(
-      task: taskController.text.trim(),
-    );
-    await db.insert(task);
-    emit(state.copyWith(tasks: tasks));
+  Future addTask(title) async {
+    var _response = await _taskApi.createTask(title);
+    var _data = _response.data;
+    getTasks();
   }
 
   Future deleteTask(int id) async {
-    final db = TasksDB();
-    await db.delete(id);
-    tasks = await db.getTasks();
-    await getTasks();
-    emit(state.copyWith(tasks: tasks));
+    var _response = await _taskApi.deleteTask(id);
+    var _data = _response.data;
+    getTasks();
   }
 
   Future getTasks() async {
-    final db = TasksDB();
-    tasks = await db.getTasks();
-    emit(state.copyWith(tasks: tasks));
+    var _response = await _taskApi.getTask();
+    var _data = _response.data;
+    task = List<Task>.from(_data.map((x) {
+      return Task.fromMap(x);
+    }));
+    
+    emit(state.copyWith(tasks: task));
   }
 
   Future updateTask(Task task) async {
-    final db = TasksDB();
-    await db.update(task);
-    emit(state.copyWith(tasks: tasks));
+    var _response = await _taskApi.updateTask(task.title!, task.id!);
+    var _data = _response.data;
+    getTasks();
   }
 }

@@ -1,20 +1,19 @@
-import 'package:demotechnixo/data/api/api_todo.dart';
-import 'package:demotechnixo/data/models/todo.dart';
+import 'package:demotechnixo/data/api/api_task.dart';
+import 'package:demotechnixo/domain/entities/task.dart';
 import 'package:demotechnixo/domain/reposittories/todo_reposittory.dart';
 import 'package:flutter/cupertino.dart';
 
 class HomeViewModel extends ChangeNotifier {
-  List<Todo> _todo = [];
-  List<Todo> get todo => _todo;
+  List<Task> _todo = [];
+  List<Task> get todo => _todo;
 
-  TodosRepository _taskApi = new TodoApi();
+  TaskRepository _taskApi = new TaskApi();
 
-  getTodo() async {
-   
+  getTask() async {
     var _response = await _taskApi.getTask();
     var _data = _response.data;
-    _todo = List<Todo>.from(_data.map((x) {
-      return Todo.fromMap(x);
+    _todo = List<Task>.from(_data.map((x) {
+      return Task.fromMap(x);
     }));
     notifyListeners();
   }

@@ -1,4 +1,3 @@
-import 'package:demotechnixo/data/database/tasks_db.dart';
 import 'package:demotechnixo/domain/entities/task.dart';
 import 'package:demotechnixo/presentation/home/view/home_cubit.dart';
 import 'package:flutter/material.dart';
@@ -24,7 +23,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
     Task? task = widget.task;
 
     if (task != null) {
-      _cubit.taskController.text = task.task!;
+      _cubit.taskController.text = task.title!;
     }
     super.initState();
   }
@@ -43,8 +42,6 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
     setState(() {
       _cubit.inSync = false;
     });
-
-    Navigator.pop(context, true);
   }
 
   void updateTask() async {
@@ -83,11 +80,11 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                   icon: Icon(Icons.done),
                   onPressed: () {
                     widget.task == null
-                        ? _cubit.addTask()
+                        ? _cubit.addTask(_cubit.taskController.text.trim())
                         : _cubit.updateTask(
                             Task(
                               id: widget.task!.id,
-                              task: _cubit.taskController.text.trim(),
+                              title: _cubit.taskController.text.trim(),
                             ),
                           );
                     Navigator.pop(context, true);

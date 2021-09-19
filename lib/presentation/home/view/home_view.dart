@@ -11,22 +11,7 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
-  
   late HomeCubit _cubit;
-
-  // Future getTasks() async {
-  //   final db = TasksDB();
-  //   tasks = await db.getTasks();
-  //   setState(() {});
-  // }
-
-  // Future deleteTask(int id) async {
-  //   final db = TasksDB();
-  //   await db.delete(id);
-  //   tasks = await db.getTasks();
-  //   await getTasks();
-  //   setState(() {});
-  // }
 
   @override
   void initState() {
@@ -56,17 +41,18 @@ class _HomeViewState extends State<HomeView> {
         body: BlocBuilder<HomeCubit, HomeState>(
           builder: (context, state) {
             return ListView.builder(
-              itemCount: _cubit.tasks.length,
+              itemCount: _cubit.task.length,
               itemBuilder: (context, index) {
                 return ListTile(
-                  title: Text(_cubit.tasks[index].task!), // Edited
+                  
+                  title: Text(_cubit.task[index].title!), // Edited
                   trailing: PopupMenuButton(
                     onSelected: (i) async {
                       if (i == 0) {
                         final result = await Navigator.pushNamed(
                           context,
                           AddTaskScreen.id,
-                          arguments: _cubit.tasks[index],
+                          arguments: _cubit.task[index],
                         );
                         if (result == true) _cubit.getTasks();
                       } else if (i == 1) {
@@ -86,7 +72,7 @@ class _HomeViewState extends State<HomeView> {
                                 ),
                                 TextButton(
                                   onPressed: () {
-                                    _cubit.deleteTask(_cubit.tasks[index].id!);
+                                    _cubit.deleteTask(_cubit.task[index].id!);
                                     // deleteTask(tasks[index].id!);
                                     Navigator.pop(context);
                                   },
