@@ -1,4 +1,4 @@
-# projects
+# demotechnixo
 
 A new Flutter project.
 
