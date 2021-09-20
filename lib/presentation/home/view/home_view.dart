@@ -44,7 +44,6 @@ class _HomeViewState extends State<HomeView> {
               itemCount: _cubit.task.length,
               itemBuilder: (context, index) {
                 return ListTile(
-                  
                   title: Text(_cubit.task[index].title!), // Edited
                   trailing: PopupMenuButton(
                     onSelected: (i) async {

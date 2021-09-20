@@ -36,6 +36,7 @@ class HomeCubit extends Cubit<HomeState> {
     }));
     
     emit(state.copyWith(tasks: task));
+    // emit(state.tasks= task)
   }
 
   Future updateTask(Task task) async {
